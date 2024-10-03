@@ -59,15 +59,17 @@ php artisan serve
 ### Пример
 
 POST /api/register
-```json
+
 {
     "name": "John Doe",
     "email": "johndoe@example.com",
     "password": "password"
 }
+
+
 Все защищённые запросы должны содержать заголовок Authorization: Bearer {токен}.
 
-Основные маршруты API
+### Основные маршруты API
 Публичные маршруты
 GET /api/products — список всех продуктов (с пагинацией).
 GET /api/categories — список категорий товаров.
