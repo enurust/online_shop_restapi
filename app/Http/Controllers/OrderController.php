@@ -56,7 +56,7 @@ class OrderController extends Controller
         $order = Order::create([
             'user_id' => $user->id,
             'total_price' => $totalPrice,
-            'status' => 'new',
+            'status' => 'Новый',
         ]);
 
         foreach ($orderItems as $item) 
@@ -85,7 +85,7 @@ class OrderController extends Controller
 
         $order = Order::where('id', $orderId)
             ->where('user_id', $user->id)
-            ->where('status', 'new')
+            ->where('status', 'Новый')
             ->first();
 
         if (!$order) {
@@ -102,7 +102,7 @@ class OrderController extends Controller
         $user->balance += $order->total_price;
         $user->save();
 
-        $order->status = 'cancelled';
+        $order->status = 'Отмененный';
         $order->save();
 
         return response()->json(['message' => 'Заказ отменен'], 200);
