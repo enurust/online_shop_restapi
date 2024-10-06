@@ -61,8 +61,8 @@ php artisan serve
 POST /api/register
 
 {
-    "name": "John Doe",
-    "email": "johndoe@example.com",
+    "name": "User",
+    "email": "user@example.com",
     "password": "password"
 }
 
