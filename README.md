@@ -70,6 +70,9 @@ POST /api/register
 Все защищённые запросы должны содержать заголовок Authorization: Bearer {токен}.
 
 ### Основные маршруты API
+
+Регистрация /api/register
+Авторизации /api/login
 Публичные маршруты
 GET /api/products — список всех продуктов (с пагинацией).
 GET /api/categories — список категорий товаров.
