@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrderController extends Controller
 {
@@ -113,7 +114,15 @@ class OrderController extends Controller
         $user = Auth::user();
         $orders = Order::with('products')->where('user_id', $user->id)->get();
 
-        return response()->json($orders, 200);
+        if($orders->isEmpty())
+        {
+            return response()->json(['message' => 'У вас нет заказов'], 400);
+        }
+        else
+        {
+            return response()->json($orders, 200);
+        }
+
     }
 
      public function getAllOrders()
@@ -124,24 +133,34 @@ class OrderController extends Controller
 
     public function updateOrderStatus(Request $request, $orderId)
     {
-        $request->validate([
-            'status' => 'required|in:Новый,Подтвержденный,Отмененный',
-        ]);
-
         $validStatuses = ['Новый', 'Подтвержденный', 'Отмененный'];
-        if (!in_array($request->status, $validStatuses)) {
-            return response()->json(['message' => 'Invalid status'], 400);
-        }
 
         $order = Order::find($orderId);
-
         if (!$order) {
-            return response()->json(['error' => 'Заказ не найден'], 404);
+            return response()->json([
+                'error' => 'Заказ не найден.'
+            ], 404);
         }
 
-        $order->status = $request->input('status');
+        $status = $request->input('status');
+        if (!$status) {
+            return response()->json([
+                'error' => 'Необходимо указать статус.'
+            ], 400);
+        }
+
+        if (!in_array($status, $validStatuses)) {
+            return response()->json([
+                'error' => 'Недопустимый статус. Возможные значения: ' . implode(', ', $validStatuses),
+            ], 400); 
+        }
+
+        $order->status = $status;
         $order->save();
 
-        return response()->json(['message' => 'Статус заказа обновлен'], 200);
+        return response()->json([
+            'message' => 'Статус заказа успешно обновлен.',
+            'order' => $order
+        ], 200);
     }
 }
