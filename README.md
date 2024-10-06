@@ -80,4 +80,4 @@ POST /api/orders/{orderId}/cancel — отмена заказа.
 GET /api/orders — получение списка заказов пользователя.
 Административные маршруты (требуется аутентификация и права администратора)
 GET /api/admin/orders — просмотр всех заказов.
-POST /api/admin/orders/{orderId}/status — изменение статуса заказа.
+PATCH /api/admin/orders/{orderId}/status — изменение статуса заказа.
